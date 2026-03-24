@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="PRS-Med: Position Reasoning Segmentation in Medical Imaging — CVPRW 2026">
+  <meta name="keywords" content="medical image segmentation, position reasoning, vision-language model, PosMed, PRS-Med">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PRS-Med: Position Reasoning Segmentation in Medical Imaging</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.4/css/academicons.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <a class="navbar-item" href="#abstract">Abstract</a>
+      <a class="navbar-item" href="#dataset">PosMed Dataset</a>
+      <a class="navbar-item" href="#method">Method</a>
+      <a class="navbar-item" href="#results">Results</a>
+      <a class="navbar-item" href="#demo">Demo</a>
+      <a class="navbar-item" href="#bibtex">BibTeX</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== HERO / TITLE ===== -->
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+
+          <span class="tag is-info is-medium" style="margin-bottom:1rem; font-size:1rem; padding:0.5rem 1.2rem; border-radius:20px;">
+            CVPRW 2026
+          </span>
+
+          <h1 class="title is-1 publication-title">
+            PRS-Med: Position Reasoning Segmentation<br>in Medical Imaging
+          </h1>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="#">Quoc-Huy Trinh</a><sup>1,2*</sup>,&nbsp;
+            </span>
+            <span class="author-block">
+              <a href="#">Minh-Van Nguyen</a><sup>3</sup>,&nbsp;
+            </span>
+            <span class="author-block">
+              <a href="#">Jun Zeng</a><sup>4</sup>,&nbsp;
+            </span>
+            <span class="author-block">
+              <a href="#">Debesh Jha</a><sup>5†</sup>,&nbsp;
+            </span>
+            <span class="author-block">
+              <a href="#">Ulas Bagci</a><sup>2†</sup>
+            </span>
+          </div>
+
+          <div class="is-size-6 publication-authors" style="margin-top:0.5rem; color:#555;">
+            <span class="author-block"><sup>1</sup>Aalto University,&nbsp;</span>
+            <span class="author-block"><sup>2</sup>Northwestern University,&nbsp;</span>
+            <span class="author-block"><sup>3</sup>Technical University of Denmark,&nbsp;</span>
+            <span class="author-block"><sup>4</sup>Chongqing University of Posts and Telecommunications,&nbsp;</span>
+            <span class="author-block"><sup>5</sup>University of South Dakota</span>
+          </div>
+          <div class="is-size-7" style="color:#888; margin-top:0.2rem;">
+            <sup>*</sup>Corresponding author &nbsp;&nbsp; <sup>†</sup>Co-advisors
+          </div>
+
+          <div class="column has-text-centered" style="margin-top:1.5rem;">
+            <div class="publication-links">
+              <span class="link-block">
+                <a href="#" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="ai ai-arxiv"></i></span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://github.com/huyquoctrinh/PRS-Med" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="fab fa-github"></i></span>
+                  <span>Code</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://huggingface.co/datasets/huyquoctrinh/PRS-Med" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="fas fa-database"></i></span>
+                  <span>Dataset</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="#" class="external-link button is-normal is-rounded is-info">
+                  <span class="icon"><i class="fas fa-file-pdf"></i></span>
+                  <span>Paper (Coming Soon)</span>
+                </a>
+              </span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ANNOUNCEMENT ===== -->
+<section class="section" style="padding-top:1.5rem; padding-bottom:1.5rem;">
+  <div class="container is-max-desktop">
+    <div class="notification is-link is-light" style="border-left:5px solid #3273dc; border-radius:8px;">
+      <p>
+        <strong>PRS-Med achieves state-of-the-art on all 6 medical imaging modalities</strong>,
+        with gains of <strong>+31.2% mDice on Lung CT</strong> and <strong>+13.6% mDice on Brain MRI</strong>
+        over the best prior methods. We also release <strong>PosMed</strong> — 116K expert-validated
+        position-reasoning QA pairs — the first dataset of its kind for spatially-grounded medical segmentation.
+        Dataset, model, and code will be open-sourced.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TEASER FIGURE ===== -->
+<section class="section" style="padding-top:0; padding-bottom:1.5rem;">
+  <div class="container is-max-desktop">
+    <figure class="arch-figure">
+      <img src="static/images/multiround-med.png"
+           alt="Sample PRS-Med QA pairs and segmentation masks across modalities">
+      <figcaption>
+        PRS-Med takes position-grounded natural language queries and returns precise segmentation masks across six medical imaging modalities — CT, MRI, X-ray, ultrasound, endoscopy, and dermatology.
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<hr>
+
+<!-- ===== ABSTRACT ===== -->
+<section class="section" id="abstract">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Medical image segmentation requires more than pixel-level pattern recognition — it demands
+            <strong>spatial position reasoning</strong> that reflects how clinicians communicate findings.
+            When a radiologist says "there is a mass in the upper-left lobe," they are linking anatomical
+            position to pathological presence. Yet existing medical multimodal large language models (MLLMs)
+            and segmentation systems struggle to bridge this gap.
+          </p>
+          <p>
+            We introduce <strong>PRS-Med</strong>, a unified framework for
+            <em>Position Reasoning Segmentation</em> in medical imaging, together with <strong>PosMed</strong>,
+            the first large-scale benchmark dataset designed for this task. PosMed contains
+            <strong>116,000 expert-validated, spatially-grounded QA pairs</strong> derived from 38,731 images
+            across six imaging modalities — CT, MRI, X-ray, ultrasound, endoscopy, and dermatology —
+            built via a two-stage automated pipeline with radiologist review.
+          </p>
+          <p>
+            PRS-Med integrates a TinySAM vision encoder with LLaVA-Med via LoRA adaptation, using a
+            cross-attention fusion module to produce segmentation masks conditioned on free-form spatial
+            language queries. Our <strong>Clinical Action Zones</strong> approach encodes position using
+            interpretable anatomical quadrants rather than pixel-coordinate regression, aligning model
+            outputs with natural radiologist language. Extensive experiments across six modalities
+            demonstrate state-of-the-art performance in both segmentation accuracy and position reasoning.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr>
+
+<!-- ===== POSMED DATASET ===== -->
+<section class="section" id="dataset">
+  <div class="container is-max-desktop">
+
+    <h2 class="title is-3 has-text-centered">PosMed: Position-Reasoning Medical Dataset</h2>
+    <p class="has-text-centered" style="color:#555; margin-bottom:2rem;">
+      The first large-scale benchmark for spatially-grounded QA and segmentation in medical imaging.
+    </p>
+
+    <!-- Stats row -->
+    <div class="columns is-centered has-text-centered" style="margin-bottom:2rem;">
+      <div class="column">
+        <p class="title is-3" style="color:#3273dc; margin-bottom:0;">116K</p>
+        <p class="is-size-6 has-text-grey">Expert-Validated QA Pairs</p>
+      </div>
+      <div class="column">
+        <p class="title is-3" style="color:#3273dc; margin-bottom:0;">38,731</p>
+        <p class="is-size-6 has-text-grey">Medical Images</p>
+      </div>
+      <div class="column">
+        <p class="title is-3" style="color:#3273dc; margin-bottom:0;">6</p>
+        <p class="is-size-6 has-text-grey">Imaging Modalities</p>
+      </div>
+      <div class="column">
+        <p class="title is-3" style="color:#3273dc; margin-bottom:0;">9</p>
+        <p class="is-size-6 has-text-grey">Source Datasets</p>
+      </div>
+      <div class="column">
+        <p class="title is-3" style="color:#3273dc; margin-bottom:0;">55</p>
+        <p class="is-size-6 has-text-grey">QA Templates</p>
+      </div>
+    </div>
+
+    <!-- Pipeline image -->
+    <figure class="arch-figure">
+      <img src="static/images/dataset_creation_pipeline.png"
+           alt="PosMed two-stage dataset creation pipeline">
+      <figcaption>
+        <strong>Figure 1. PosMed dataset pipeline.</strong>
+        Stage 1 — Template Preparation: 55 QA templates doctor-validated and GPT-4 refined.
+        Stage 2 — Position Extraction: bounding-box centroids mapped to five Clinical Action Zones
+        (top-left, top-right, bottom-left, bottom-right, center). A board-certified radiologist
+        majority-vote review filters 310K raw pairs down to 116K validated QA pairs.
+      </figcaption>
+    </figure>
+
+    <!-- Dataset construction steps -->
+    <div class="columns is-multiline" style="margin-top:2.5rem;">
+      <div class="column is-half">
+        <div class="media">
+          <div class="media-left">
+            <span class="tag is-link is-medium" style="width:2rem; justify-content:center; border-radius:50%; font-weight:700;">1</span>
+          </div>
+          <div class="media-content">
+            <p class="title is-6">Template Preparation</p>
+            <p class="is-size-6 has-text-grey">55 QA templates co-designed with 3 doctors, then linguistically polished by GPT-4 for naturalness and clinical accuracy.</p>
+          </div>
+        </div>
+      </div>
+      <div class="column is-half">
+        <div class="media">
+          <div class="media-left">
+            <span class="tag is-link is-medium" style="width:2rem; justify-content:center; border-radius:50%; font-weight:700;">2</span>
+          </div>
+          <div class="media-content">
+            <p class="title is-6">Position Extraction</p>
+            <p class="is-size-6 has-text-grey">Bounding-box centroids from ground-truth segmentation masks are mapped to one of five Clinical Action Zones.</p>
+          </div>
+        </div>
+      </div>
+      <div class="column is-half">
+        <div class="media">
+          <div class="media-left">
+            <span class="tag is-link is-medium" style="width:2rem; justify-content:center; border-radius:50%; font-weight:700;">3</span>
+          </div>
+          <div class="media-content">
+            <p class="title is-6">GPT QA Generation</p>
+            <p class="is-size-6 has-text-grey">Templates and extracted positions are combined via GPT to generate ~310K diverse, clinically-phrased QA pairs.</p>
+          </div>
+        </div>
+      </div>
+      <div class="column is-half">
+        <div class="media">
+          <div class="media-left">
+            <span class="tag is-link is-medium" style="width:2rem; justify-content:center; border-radius:50%; font-weight:700;">4</span>
+          </div>
+          <div class="media-content">
+            <p class="title is-6">Expert Radiologist Validation</p>
+            <p class="is-size-6 has-text-grey">Board-certified radiologists review for medical accuracy, positional relevance, and clinical plausibility via majority voting — yielding 116K final pairs.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Distribution statistics -->
+    <div style="display:flex; gap:1.5rem; margin-top:2.5rem; align-items:flex-start;">
+      <figure style="margin:0; flex:1;">
+        <div style="height:260px; display:flex; align-items:center; justify-content:center; background:#fafafa; border-radius:6px; overflow:hidden;">
+          <img src="static/images/distribution.jpg" alt="Source dataset distribution" style="width:100%; height:100%; object-fit:contain;">
+        </div>
+        <figcaption style="margin-top:0.5rem;"><strong>Source dataset distribution.</strong> PosMed aggregates 9 public datasets: BUSI, Brain MRI, LungCT, LungXray, Kvasir-SEG, ClinicDB, CVC300, ColonDB, ETIS, and ISIC.</figcaption>
+      </figure>
+      <figure style="margin:0; flex:1;">
+        <div style="height:260px; display:flex; align-items:center; justify-content:center; background:#fafafa; border-radius:6px; overflow:hidden;">
+          <img src="static/images/tumor_ana.jpg" alt="Tumor vs anatomy-centric QA distribution" style="width:100%; height:100%; object-fit:contain;">
+        </div>
+        <figcaption style="margin-top:0.5rem;"><strong>Description type.</strong> 84.3% anatomy-centric vs 15.7% tumor-centric QA pairs, reflecting the spatial language distribution found in real clinical reports.</figcaption>
+      </figure>
+    </div>
+
+  </div>
+</section>
+
+<hr>
+
+<!-- ===== METHOD ===== -->
+<section class="section" id="method">
+  <div class="container is-max-desktop">
+
+    <h2 class="title is-3 has-text-centered">PRS-Med Architecture</h2>
+    <p class="has-text-centered" style="color:#555; margin-bottom:2rem;">
+      A unified framework for position-aware natural language segmentation.
+    </p>
+
+    <figure class="arch-figure">
+      <img src="static/images/overall_arch_final.png" alt="PRS-Med overall architecture diagram">
+      <figcaption>
+        <strong>Figure 3. PRS-Med architecture.</strong>
+        Given a medical image and a spatial language query, the TinySAM vision encoder and
+        LLaVA-Med (LoRA-adapted) process image and text in parallel. A cross-attention fusion
+        module combines both representations into a shared space, and a transposed-convolution
+        mask decoder upsamples the result to a 1024×1024 segmentation mask.
+      </figcaption>
+    </figure>
+
+    <!-- Two-column model description -->
+    <div class="columns" style="margin-top:2.5rem;">
+      <div class="column">
+        <h3 class="title is-5">Two-Stage Training</h3>
+        <p class="is-size-6">
+          <strong>Stage 1 — Feature Alignment.</strong> The vision encoder and LLM are frozen;
+          only the cross-attention fusion module is trained to align visual and language representations.
+        </p>
+        <p class="is-size-6" style="margin-top:1rem;">
+          <strong>Stage 2 — End-to-End Fine-tuning.</strong> All components are jointly optimized
+          on PosMed using a combined objective:
+          <em>L = L<sub>BCE</sub> + L<sub>Dice</sub> + 0.5 · L<sub>CE</sub></em>,
+          balancing mask quality and language generation.
+        </p>
+      </div>
+      <div class="column">
+        <h3 class="title is-5">Clinical Action Zones</h3>
+        <p class="is-size-6">
+          Rather than regressing pixel coordinates, PRS-Med encodes lesion position using
+          <strong>five interpretable quadrants</strong>: Top-Left, Top-Right, Bottom-Left,
+          Bottom-Right, and Center — derived from bounding-box centroids of ground-truth masks.
+        </p>
+        <p class="is-size-6" style="margin-top:1rem;">
+          This design mirrors the spatial language radiologists use in clinical reports
+          ("upper-right lobe," "lower-left quadrant") and produces outputs that align
+          naturally with clinical documentation.
+        </p>
+      </div>
+    </div>
+
+    <!-- Model components summary table -->
+    <div style="overflow-x:auto; margin-top:2rem;">
+      <table class="results-table">
+        <thead>
+          <tr>
+            <th style="text-align:left;">Component</th>
+            <th>Module</th>
+            <th>Output Shape</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Vision Encoder</td>
+            <td>TinySAM (TinyViT)</td>
+            <td>256 × 16 × 16</td>
+            <td>Unfrozen for medical adaptation</td>
+          </tr>
+          <tr>
+            <td>Multimodal LLM</td>
+            <td>LLaVA-Med + LoRA</td>
+            <td>b × l × 4096</td>
+            <td>rank=16, α=16; full hidden states used</td>
+          </tr>
+          <tr>
+            <td>Fusion Module</td>
+            <td>Cross-Attention + skip</td>
+            <td>b × 256 × 16 × 16</td>
+            <td>Projects both streams to 256-dim</td>
+          </tr>
+          <tr>
+            <td>Mask Decoder</td>
+            <td>Transposed Conv</td>
+            <td>b × 1 × 1024 × 1024</td>
+            <td>BCE + Dice loss</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</section>
+
+<hr>
+
+<!-- ===== RESULTS ===== -->
+<section class="section" id="results">
+  <div class="container is-max-desktop">
+
+    <h2 class="title is-3 has-text-centered">Results</h2>
+    <p class="has-text-centered" style="color:#555; margin-bottom:2rem;">
+      Evaluated across 6 modalities against segmentation and position reasoning baselines, all fine-tuned on PosMed.
+    </p>
+
+    <!-- Segmentation -->
+    <h3 class="title is-4">Segmentation Performance &nbsp;<small style="font-weight:400; font-size:1rem;">(mDice / mIoU)</small></h3>
+    <div style="overflow-x:auto;">
+      <table class="results-table">
+        <thead>
+          <tr>
+            <th>Method</th>
+            <th>Breast US</th>
+            <th>Brain MRI</th>
+            <th>Lung CT</th>
+            <th>Lung X-ray</th>
+            <th>Polyp</th>
+            <th>Skin</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="section-header"><td colspan="7">Segmentation Baselines</td></tr>
+          <tr>
+            <td>G-DINO + SAM-Med2D</td>
+            <td>0.768 / 0.693</td>
+            <td>0.607 / 0.591</td>
+            <td>0.657 / 0.567</td>
+            <td>0.949 / 0.916</td>
+            <td>0.796 / 0.751</td>
+            <td>0.868 / 0.794</td>
+          </tr>
+          <tr>
+            <td>BiomedParse</td>
+            <td>0.781 / 0.697</td>
+            <td>0.681 / 0.625</td>
+            <td>0.748 / 0.664</td>
+            <td>0.961 / 0.931</td>
+            <td>0.821 / 0.772</td>
+            <td>0.885 / 0.815</td>
+          </tr>
+          <tr>
+            <td>LISA-7B</td>
+            <td>0.783 / 0.698</td>
+            <td>0.667 / 0.625</td>
+            <td>0.736 / 0.667</td>
+            <td>0.972 / 0.951</td>
+            <td>0.824 / 0.774</td>
+            <td>0.893 / 0.822</td>
+          </tr>
+          <tr>
+            <td>LISA-13B</td>
+            <td>0.790 / 0.706</td>
+            <td>0.708 / 0.668</td>
+            <td>0.737 / 0.668</td>
+            <td>0.972 / 0.951</td>
+            <td>0.826 / 0.775</td>
+            <td>0.895 / 0.823</td>
+          </tr>
+          <tr class="highlight-row">
+            <td class="best">PRS-Med (Ours)</td>
+            <td class="best">0.817 / 0.729</td>
+            <td class="best">0.803 / 0.757</td>
+            <td class="best">0.968 / 0.943</td>
+            <td class="best">0.973 / 0.952</td>
+            <td class="best">0.843 / 0.791</td>
+            <td class="best">0.901 / 0.833</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Position reasoning -->
+    <h3 class="title is-4" style="margin-top:2.5rem;">Position Reasoning Performance &nbsp;<small style="font-weight:400; font-size:1rem;">(ROUGE / Accuracy)</small></h3>
+    <div style="overflow-x:auto;">
+      <table class="results-table">
+        <thead>
+          <tr>
+            <th>Method</th>
+            <th>Breast US</th>
+            <th>Brain MRI</th>
+            <th>Lung CT</th>
+            <th>Lung X-ray</th>
+            <th>Polyp</th>
+            <th>Skin</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="section-header"><td colspan="7">Medical MLLM Baselines</td></tr>
+          <tr>
+            <td>LLaVA-Med</td>
+            <td>0.58 / 79.75%</td>
+            <td>0.61 / 80.17%</td>
+            <td>0.65 / 88.17%</td>
+            <td>0.59 / 82.08%</td>
+            <td>0.65 / 55.64%</td>
+            <td>0.71 / 92.08%</td>
+          </tr>
+          <tr>
+            <td>HuatuoGPT</td>
+            <td>0.59 / 81.63%</td>
+            <td>0.62 / 81.17%</td>
+            <td>0.66 / 88.17%</td>
+            <td>0.60 / 84.00%</td>
+            <td>0.66 / 56.64%</td>
+            <td>0.72 / 92.08%</td>
+          </tr>
+          <tr>
+            <td>Med-MoE</td>
+            <td>0.60 / 81.63%</td>
+            <td>0.63 / 81.17%</td>
+            <td>0.67 / 88.17%</td>
+            <td>0.61 / 84.00%</td>
+            <td>0.67 / 56.64%</td>
+            <td>0.73 / 92.08%</td>
+          </tr>
+          <tr>
+            <td>MedVLM-R1</td>
+            <td>0.61 / 81.63%</td>
+            <td>0.64 / 81.17%</td>
+            <td>0.69 / <strong>88.17%</strong></td>
+            <td>0.62 / 84.00%</td>
+            <td>0.68 / 55.64%</td>
+            <td>0.74 / 92.08%</td>
+          </tr>
+          <tr class="highlight-row">
+            <td class="best">PRS-Med (Ours)</td>
+            <td class="best">0.64 / 92.92%</td>
+            <td class="best">0.67 / 86.17%</td>
+            <td>0.71 / 76.67%</td>
+            <td class="best">0.64 / 94.36%</td>
+            <td class="best">0.71 / 72.43%</td>
+            <td class="best">0.76 / 96.31%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:0.85rem; color:#888; margin-top:0.5rem;">
+      <em>Best results <strong>bold</strong>. PRS-Med (green) leads on 5/6 modalities for position reasoning and all 6 for segmentation.</em>
+    </p>
+
+  </div>
+</section>
+
+<hr>
+
+<!-- ===== DEMO / QUALITATIVE ===== -->
+<section class="section" id="demo">
+  <div class="container is-max-desktop">
+
+    <h2 class="title is-3 has-text-centered">Qualitative Examples</h2>
+    <p class="has-text-centered" style="color:#555; margin-bottom:2rem;">
+      PRS-Med takes a position-grounded natural language query and returns a segmentation mask across all six modalities.
+    </p>
+
+    <figure class="arch-figure">
+      <img src="static/images/prs_med_vis.png"
+           alt="PRS-Med qualitative segmentation results across modalities">
+      <figcaption>
+        <strong>Figure 4. PRS-Med qualitative results.</strong>
+        For each modality, the input image and spatial language query (e.g., <em>"segment the lesion in the upper-left"</em>) are shown alongside the predicted segmentation mask and ground truth overlay.
+      </figcaption>
+    </figure>
+
+  </div>
+</section>
+
+<hr>
+
+<!-- ===== BIBTEX ===== -->
+<section class="section" id="bibtex">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3">BibTeX</h2>
+    <pre style="background:#f5f5f5; padding:1.5rem; border-radius:8px; overflow-x:auto; font-size:0.875rem; line-height:1.6;"><code>@article{trinh2025prs,
+  title={Prs-med: Position reasoning segmentation with vision-language model in medical imaging},
+  author={Trinh, Quoc-Huy and Nguyen, Minh-Van and Zeng, Jung and Bagci, Ulas and Jha, Debesh},
+  journal={arXiv preprint arXiv:2505.11872},
+  year={2025}
+}</code></pre>
+  </div>
+</section>
